@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gms.web.mbr.MemberMapper"> <!-- 객체  -->
+  <select id="login" resultType="com.gms.web.mbr.Member">
+    SELECT *
+    FROM MEMBER WHERE USERID LIKE #{userid} AND PASSWORD LIKE #{password}
+  </select>
+   <select id="exist" resultType="string">
+    SELECT USERID
+    FROM MEMBER WHERE USERID LIKE #{userid} 
+  </select>
+  <insert id="insert" >
+    INSERT INTO MEMBER(NAME, USERID, PASSWORD, SSN, AGE, GENDER, ROLL, TEAMID)
+   	VALUES(#{name}, #{userid}, #{password}, #{ssn}, #{age}, #{gender}, #{roll}, #{teamid})
+  </insert>
+   <select id="selectOne" resultType="com.gms.web.mbr.Member">
+    SELECT NAME, USERID, PASSWORD, SSN, AGE, GENDER, ROLL, TEAMID
+    FROM MEMBER WHERE USERID LIKE #{userid} 
+  </select>
+  <update id="update" >
+  UPDATE MEMBER
+  SET PASSWORD =#{password}, ROLL =#{roll}, TEAMID =#{teamid}
+  WHERE USERID LIKE #{userid};
+  </update>
+  <delete id="delete">
+   DELETE FROM MEMBER WHERE USERID LIKE #{userid} AND PASSWORD LIKE #{password};
+  </delete>
+</mapper>
