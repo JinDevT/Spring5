@@ -10,6 +10,6 @@ public class Util {
 	public static Function<String,Integer> convInt = Integer::parseInt;
 	public static Predicate<String> empty = s -> s.equals(""); 
 	public static Predicate<String> notEmpty = empty.negate();
-	
+	//
 	
 }
