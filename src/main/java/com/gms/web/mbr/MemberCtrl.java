@@ -14,16 +14,18 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.gms.web.cmm.Util;
 
 //
-@Controller
+@RestController
 @RequestMapping("/member")
-@SessionAttributes("user")
+
 public class MemberCtrl {
 	static final Logger logger =  LoggerFactory.getLogger(MemberCtrl.class);
 	 //set만 하는거임. 선언이 아니고 객체로 만드는 거임. 싱글톤의 getInstance와 같다. 스프링에서 가져오는 싱글톤 객체
@@ -70,7 +72,7 @@ public class MemberCtrl {
 		return "redirect:/";
 		
 	}
-	@RequestMapping(value="/login", method=RequestMethod.POST)
+	@PostMapping("/login")
 	public String login(@ModelAttribute("member") Member param, Model model) {
 		logger.info("---MemberContoller login {}--");
 		//Predicate<String> p = s-> !s.equals(""); //파라미터로 받은 녀석이 널이 아니면..
@@ -79,23 +81,18 @@ public class MemberCtrl {
 		System.out.println(":::::::::::"+b);
 		String page = "login_fail";
 		if(b) {
-			Function<Member,Member> f = (t)->{
+			Function<Member,Member> T = (t)->{
 				return mbrMapper.login(t);
-		};
-		System.out.println("param id >>"+param.getUserid());
-		System.out.println("param pw >>"+param.getPassword());
-		Member mem = f.apply(param);
-		/*model.addAttribute("user",mem);*/
-		System.out.println("member 정보 :: "+mem);
-		System.out.println("로그인성공!!");
-			page= "login_success";
+			};
+	/*	Member mem = T.apply(param);*/
+		page = (T.apply(param).getRoll()!=null)? 
+				"login_success" : "login_fail";
 		}
 		member = (Predicate.isEqual("login_success").test(page))?
-			member = mbrMapper.selectOne(param):
-			new Member()
-		;
+			mbrMapper.selectOne(param):
+			new Member();
+			
 		 Util.log.accept(member.toString());
-		System.out.println("member 정보 ::"+member);
 		
 		return page;
 	
@@ -120,11 +117,11 @@ public class MemberCtrl {
 		
 		
 	}
-	@RequestMapping("/logout")
+/*	@RequestMapping("/logout")
 	public String logout() {
 		logger.info("---MemberContoller logout {}--");
 		return "redirect:/";
-	}
+	}*/
 	@RequestMapping("/fileupload")
 	public void fileupload() {}
 	

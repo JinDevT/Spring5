@@ -1,11 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Home</title>
-	
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -66,26 +63,15 @@
 
     <!-- Custom scripts for this template -->
     <script src="${context}/resources/js/freelancer.min.js"></script>
-   <%--  <script src="${context}/resources/js/app.js"></script> --%>
+    <script src="${context}/resources/js/algo.js"></script>  
+      
 </head>
 <body>
 <div id="wrapper">
-	<div id="nav">
-		<tiles:insertAttribute name="nav"/>
-	</div> <!-- header end -->	
-	<div id="header">
-		<tiles:insertAttribute name="header"/>
-	</div> <!-- header end -->		
-	
-	<div id="content">
-		<tiles:insertAttribute name="content"/>
-	</div> <!-- content end -->	
-		
-	<div id="footer">
-		<tiles:insertAttribute name="footer"/>
-	</div> <!-- footer end -->
-	
 	
 </div>	
+<script>
+	algo.init('${context}');
+</script>
 </body>
 </html>

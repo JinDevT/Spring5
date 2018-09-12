@@ -78,41 +78,6 @@ app = {
 		}
 }; //객체리터럴방식
 	
-app.session ={
-		context : x=>{
-			console.log('step 2 ::'+x);
-			sessionStorage.setItem('context',x); //내장되어있는 객체와 메소드
-			sessionStorage.setItem('js',x+'/resources/js');
-			sessionStorage.setItem('css',x+'/resources/css');
-			sessionStorage.setItem('img',x+'/resources/img');
-		},
-		path : x=> {
-			return sessionStorage.getItem(x) //이 return 은 클로져내부의 return
-		}
-};
-app.x = ()=>{
-	return app.session.path('context');
-};
-app.j = ()=>{
-	return app.session.path('js');
-};
-app.c = ()=>{
-	return app.session.path('css');
-};
-app.i = ()=>{
-	return app.session.path('img');
-};
-//
-user.session = x=>{
-	$.each(x, function(k,v){
-		alert('key :'+k+', value:' +v);
-		sessionStorage.setItem(k,v);
-	});
-	alert(sessionStorage.getItem('userid'));
-}
-user.get = x=>{
-	return sessionStorage.getItem(x);
-}
 
 
 
