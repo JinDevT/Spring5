@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.gms.web.cmm.Util;
+
 //
 @Controller
 @RequestMapping("/member")
@@ -27,6 +29,7 @@ public class MemberCtrl {
 	 //set만 하는거임. 선언이 아니고 객체로 만드는 거임. 싱글톤의 getInstance와 같다. 스프링에서 가져오는 싱글톤 객체
 	@Autowired MemberService memberService;
 	@Autowired MemberMapper mbrMapper;
+	@Autowired Member member;
 	@RequestMapping(value= "/add", method=RequestMethod.POST)
 	public String add(@ModelAttribute("member") Member member) {
 		logger.info("---MemberContoller add {}--");
@@ -70,27 +73,32 @@ public class MemberCtrl {
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String login(@ModelAttribute("member") Member param, Model model) {
 		logger.info("---MemberContoller login {}--");
-		Predicate<String> p = s-> !s.equals("");
+		//Predicate<String> p = s-> !s.equals(""); //파라미터로 받은 녀석이 널이 아니면..
 		System.out.println(">>>>>>>>>"+param.getUserid());
-		String r = mbrMapper.exist(param.getUserid());
-		System.out.println("+++++++"+r);
-		boolean b = p.test(r);
+		boolean b = Util.notEmpty.test(mbrMapper.exist(param.getUserid()));
 		System.out.println(":::::::::::"+b);
+		String page = "login_fail";
 		if(b) {
 			Function<Member,Member> f = (t)->{
-				return mbrMapper.selectOne(t);
+				return mbrMapper.login(t);
 		};
 		System.out.println("param id >>"+param.getUserid());
 		System.out.println("param pw >>"+param.getPassword());
-		Member s2 = f.apply(param);
-		model.addAttribute("user",s2);
-		System.out.println("88888 :: "+s2);
+		Member mem = f.apply(param);
+		/*model.addAttribute("user",mem);*/
+		System.out.println("member 정보 :: "+mem);
 		System.out.println("로그인성공!!");
-			return "login_success";
-		}else {
-			System.out.println("로그인실패!");
-			return "redirect:/move/public/member/login";
+			page= "login_success";
 		}
+		member = (Predicate.isEqual("login_success").test(page))?
+			member = mbrMapper.selectOne(param):
+			new Member()
+		;
+		 Util.log.accept(member.toString());
+		System.out.println("member 정보 ::"+member);
+		
+		return page;
+	
 			
 			
 		

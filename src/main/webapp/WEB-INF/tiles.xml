@@ -23,4 +23,11 @@
  		<put-attribute name="nav" value="/WEB-INF/views/member/auth.jsp"/>
 		<put-attribute name="content" value="/WEB-INF/views/member/retrieve.jsp"/>
  	</definition>
+ 	<definition name="login_fali" extends="public">
+ 		<put-attribute name="nav" value="/WEB-INF/views/member/nav.jsp"/>
+ 		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+		<put-attribute name="content" value="/WEB-INF/views/member/login.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
+  	
+ 	</definition>
 </tiles-definitions>
