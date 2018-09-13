@@ -54,7 +54,7 @@ algo.main ={
 				.click(e=>{
 					$('<h5/>').appendTo($('#ques')).empty().text(($.fn.nullChecker([
 					     $('#sta').val(),
-						 $('#end').val(), 
+						 $('#end').val(),  
 						 $('#d').val()
 					])))?
 					'빈칸을 채우세요': '완성';
