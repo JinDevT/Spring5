@@ -39,43 +39,67 @@ algo.main ={
 					+'	<label for="공차">공차</label><input id="d" type="text" value=""></br>'
 					+'	<button id="bt">결과보기</button>'
 				    +'	<h6 id= "rs">결과보기</h6></div>'; */
+				/*for(){
+					
+				}*/
 				$('<div/>').attr({id:'ques'}).appendTo($t_r);
 				$('<h3/>').html('시작값 x, 마지막값 y, 공차 d 인 등차수열의 합을 구하시오.').appendTo($('#ques'));
-				$('<label/>').html('시작값').appendTo($('#ques'));
-				$('<input/>').attr({id:'sta',type:'text'}).appendTo($('#ques'));
-				$('<br/>').appendTo($('#ques'));
-				$('<label/>').html('마지막값').appendTo($('#ques'));
-				$('<input/>').attr({id:'end',type:'text'}).appendTo($('#ques'));
-				$('<br/>').appendTo($('#ques'));
-				$('<label/>').html('공차').appendTo($('#ques'));
-				$('<input/>').attr({id:'d',type:'text'}).appendTo($('#ques'));
-				$('<br/>').appendTo($('#ques'));
+				
+			
+				let obj =[{id:'star', label:'시작값'},
+						   {id:'end', label:'마지막값'},
+						   {id:'diff', label:'공차'}];
+				
+				$.each(obj, function(i,j){
+					$('<label/>').html(j.label).appendTo($('#ques'));
+					$('<input/>').attr({id:j.id, type:'text'}).appendTo($('#ques'));
+					$('<br/>').appendTo($('#ques'));
+				});
+				
+				
+				/*$(obj).each(function(i){
+					$('<label/>').html(this.label).appendTo($('#ques'));
+					$('<input/>').attr({id:this.id, type:'text'}).appendTo($('#ques'));
+					$('<br/>').appendTo($('#ques'));
+				});*/
+				
+				/*방법1
+				 * $.each(obj, function(i){
+					$('<label/>').html(this.label).appendTo($('#ques'));
+					$('<input/>').attr({id:this.id, type:'text'}).appendTo($('#ques'));
+					$('<br/>').appendTo($('#ques'));
+					
+				})*/
+				
+				/*방법2
+				 * for(let i in arr){
+					$('<label/>').html(arr[i].label).appendTo($('#ques'));
+					$('<input/>').attr({id:arr[i].id,type:'text'}).appendTo($('#ques'));
+					$('<br/>').appendTo($('#ques'));
+				}*/
+				
 				$('<button/>').addClass('btn').html('결과보기.').appendTo($('#ques'))
 				.click(e=>{
-					$('<h5/>').appendTo($('#ques')).empty().text(($.fn.nullChecker([
-					     $('#sta').val(),
-						 $('#end').val(),  
-						 $('#d').val()
-					])))?
-					'빈칸을 채우세요': '완성';
-					$('#t_r').html(ques);
-						if(rs=='완성'){
+					$('#h6').remove();
+					let res = "숫자를 입력하세요";
+					let a = $.fn.zeroChecker([$('#sta').val(),$('#end').val(),$('#diff').val()]);
+					if(!a){
 						let sta = $('#sta').val()*1;
-						let end = $('#end').val()*1; 
-						let d = $('#d').val()*1;
+						let end = $('#end').val()*1;
+						let diff = $('#diff').val()*1;
+						console.log(sta+','+end+','+diff);
 						let i = sta;
 						let sum = 0;
-						console.log(sta+','+end+','+d);
 						while(i<=end){
-							sum += i;
-							i = d + i;
+							sum=sum+i;
+							i=i+diff;
 						}
+						res = sum;
+						$('#h6').text(res);
 					}
-						
-						$('#rs').append('답 : '+sum);
-					
-				});
-		});
+					$('<h6/>').attr({id:"h6"}).appendTo('#ques').text(res);
+				})
+			});
 		
 				
 			
