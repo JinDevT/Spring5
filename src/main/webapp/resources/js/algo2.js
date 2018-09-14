@@ -21,13 +21,12 @@ algo.main ={
 					+'<table id="tb1" style="width:800px;height:300px;'
 					+'border-collapse: collapse;border : 1px solid black;margin:0 auto">'
 					+'<tr style="border: 1px solid black;">'
-					+'<td id="t_1" style="width: 50%; border: 1px solid black;"></td>'
+					+'<td id="t_l" style="width: 50%; border: 1px solid black;"></td>'
 					+'<td id="t_r" style="width: 50%; border: 1px solid black;"></td>'
 					+'</tr>'
 					+'</table>'
 					+'</div>');
-			let $t_1 = $('#t_1');
-			let $t_r = $('#t_r');
+			let $t_1 = $('#t_l');
 			$("<ul />").attr({id : 'side_menu'}).addClass('list-group').appendTo($t_1);
 			$('<li/>').attr({id: 'arith'}).addClass('list-group-item').appendTo($('#side_menu'));
 			$('<a/>').attr({href : '#'}).html('등차수열의합').appendTo($('#arith'))
@@ -37,33 +36,11 @@ algo.main ={
 				let obj =[{id:'star', label:'시작값'},
 						   {id:'end', label:'마지막값'},
 						   {id:'diff', label:'공차'}];
-				$.each(obj, function(i,j){
-					$('<label/>').html(j.label).appendTo($('#ques'));
-					$('<input/>').attr({id:j.id, type:'text'}).appendTo($('#ques'));
+				$(obj).each(function(i){
+					$('<label/>').html(this.label).appendTo($('#ques'));
+					$('<input/>').attr({id:this.id, type:'text'}).appendTo($('#ques'));
 					$('<br/>').appendTo($('#ques'));
 				});
-				
-				
-				/*$(obj).each(function(i){
-					$('<label/>').html(this.label).appendTo($('#ques'));
-					$('<input/>').attr({id:this.id, type:'text'}).appendTo($('#ques'));
-					$('<br/>').appendTo($('#ques'));
-				});*/
-				
-				/*방법1
-				 * $.each(obj, function(i){
-					$('<label/>').html(this.label).appendTo($('#ques'));
-					$('<input/>').attr({id:this.id, type:'text'}).appendTo($('#ques'));
-					$('<br/>').appendTo($('#ques'));
-					
-				})*/
-				
-				/*방법2
-				 * for(let i in arr){
-					$('<label/>').html(arr[i].label).appendTo($('#ques'));
-					$('<input/>').attr({id:arr[i].id,type:'text'}).appendTo($('#ques'));
-					$('<br/>').appendTo($('#ques'));
-				}*/
 				$('<button/>').addClass('btn').html('결과보기.').appendTo($('#ques'))
 				.click(e=>{
 					$('#h6').remove();
