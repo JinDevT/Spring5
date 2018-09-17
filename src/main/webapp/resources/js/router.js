@@ -8,6 +8,6 @@ function Session(x){
 		ctx :()=>{return sessionStorage.getItem('ctx');},
 		script :()=>{return sessionStorage.getItem('script');},
 		style :()=>{return sessionStorage.getItem('style');},
-		img :()=>{return sessionStorage.getItem(img);}
+		img :()=>{return sessionStorage.getItem('img');}
 	};
 }
