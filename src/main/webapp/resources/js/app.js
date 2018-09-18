@@ -158,7 +158,7 @@ app.board = (()=>{
 	};
 	
 	return {init : init};
-})();
+})();//
 app.permission =(()=>{
 	var login =()=>{
 		alert('login');
