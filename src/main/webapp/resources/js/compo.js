@@ -7,13 +7,13 @@ var ui ={
 		return $('<a/>').attr({href : '#'}).html(x.txt);
 	},
 	ul :x=>{ // ui.ul([{txt:}])
-		let ul = $('<ul>');
+		let y = $('<ul>');
 		for(var i=0;i<x.len;i++){
 			$('<li/>').attr({
 				id : x.id+'-'+i
-			}).appendTo(ul);
+			}).appendTo(y);
 		}
-		return ul;
+		return y;
 	},
 	label : x=>{
 		return  $('<label/>')
@@ -21,21 +21,25 @@ var ui ={
 	
 	},
 	input : x=>{
-		let p = ui.div({}).addClass("input-group mb-3");
+		let y = ui.div({}).addClass("input-group mb-3");
 		//$('#test').html(' <span class="input-group-text" id="basic-addon1">@</span>'); //이렇게 하면 안된다.
 		(ui.div({id:'input-group-prepend'})
 				.addClass("input-group-prepend"))
 				.html('<span class="input-group-text" id="basic-addon1">'
-						/*+ x.div__val*/
-						+'비용</span>').appendTo(p);
+						+ x.txt
+						+'</span>').appendTo(y);
 		$("<input/>").attr({
-			id : x.input__id,
+			id : x.id,
 			type: 'text',
 			placeholder:"입금액" ,
 			"aria-label":"Username", 
 			"aria-describedby":"basic-addon1"
-		}).addClass("form-control").appendTo(p);
-		return p;
+		}).addClass("form-control").appendTo(y);
+		return y;
+	},
+	btn : x=>{
+		//<button type="button" class="btn btn-primary">Primary</button>
+			return $('<button/>').attr('type','button').addClass('btn btn-'+x.clazz).html(x.txt);
 	}
 	
 	/*<div class="input-group mb-3">

@@ -81,18 +81,36 @@ algo.main = (()=>{
 				ui.ul({len: 3, id: 'menu'}).appendTo($t_1);
 				ui.anchor({txt:'화폐문제'}).appendTo($('#menu-0'))
 				.click(x=>{
+					$t_r.empty();
 					alert('화폐문제!!');
 					$('<h6>화폐문제</h6>').appendTo($t_r);
 					ui.input({
 						id : 'money',
-						type : 'text',
-						value : ''
-					})
-					.prepend(ui.label({
-						id : 'money',
 						txt : '입금액'
-					}))
+						
+					})
 					.appendTo($t_r);
+					ui.btn({clazz:'primary', txt:'전 송'})
+					.appendTo($t_r)
+					.click(e=>{
+						
+						alert('화폐구매 :::'+$('#money').val());
+						$.ajax({
+							url : ctx +'/algo/money/',
+							method : 'post',
+							contentType : 'application/json',
+							data : JSON.stringify({money : $('#money').val()}), //보안을 위해 data를 넣는다. 제이슨 방식으로.
+							success : d=>{
+								alert('AJAX 성공이다!!'+d.test);
+							},
+							error : (m1,m2,m3)=>{
+								alert('에러발생1'+m1);
+								alert('에러발생2'+m2);
+								alert('에러발생3'+m3);
+							}
+						});
+					});
+					
 					
 				});
 			});

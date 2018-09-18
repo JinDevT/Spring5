@@ -63,7 +63,7 @@
 
     <!-- Custom scripts for this template -->
     <script src="${context}/resources/js/freelancer.min.js"></script>
-    <script src="${context}/resources/js/algo.js"></script>  
+    <script src="${context}/resources/js/app.js"></script>  
       
 </head>
 <body>
@@ -71,7 +71,7 @@
 	
 </div>	
 <script>
-	algo.init('${context}');
+	app.init('${context}');
 </script>
 </body>
 </html>
