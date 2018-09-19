@@ -70,7 +70,7 @@ app.permission =(()=>{
 						alert('PW 판단'+d.PW);
 						alert('MBR 판단'+d.MBR.userid);   
 						if(d.ID ==="WRONG"){ 
-							
+							  
 						}else if(d.PW==="WRONG"){
 							
 						}else{
