@@ -68,7 +68,7 @@ app.permission =(()=>{
 					success : d=>{
 						alert('ID 판단'+d.ID);   //d가 rmap 이다.
 						alert('PW 판단'+d.PW);
-						alert('MBR 판단'+d.MBR.userid); 
+						alert('MBR 판단'+d.MBR.userid);   
 						if(d.ID ==="WRONG"){ 
 							
 						}else if(d.PW==="WRONG"){
