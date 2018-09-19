@@ -13,5 +13,6 @@ public class Util {
 	public static Predicate<String> empty = s -> s.equals(""); 
 	public static Predicate<String> notEmpty = empty.negate();
 	public static Function<HttpServletRequest,String> ctx =HttpServletRequest::getContextPath;
+
 	
 }

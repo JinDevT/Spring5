@@ -4,9 +4,9 @@ function loginUI(){
 	+'		<form id ="loginForm" name ="loginForm"> '
 	+'			USER_ID: <input type="text" id="userid" name="userid" />'
 	+'			PASSWORD: <input type="password" id="password" name="password"/>'
-	+'			<input id="login_submit" type="button" value="LOGIN"> '
+	+'			<input id="login_submit" type="button"  class="btn btn-primary" value="LOGIN"> '
 	+'		</form>'
 	+'</div>';
-}    
+}     
 
  

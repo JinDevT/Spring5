@@ -3,81 +3,6 @@ var app= app || { };
 var user = user || {};
 
 //만약에 app 있다면 있는걸로 대체하고 없으면 새로운거로 만들어라.	
-/*app =(x=>{
-	var init =x=>{
-		console.log('step 1'); //콘솔에 뜨게하는 것
-		//app.session.context(x); //session으로 되어있지만 이 세션은 각 사용자의 모니터?
-		app.router.init(x); // 이거내가 대신 넣어줬다 . 
-		app.onCreate();
-	};
-	onCreate : ()=>{
-		console.log('step 3'); 
-		app.setContentView();
-		$('#login_btn').click(()=>{ 
-			location.href = app.x()+'/move/public/member/login';
-			alert('login_btn : '+app.x()+'/move/public/member/login');
-		});
-		$('#join_btn').click(()=>{ 
-		
-			location.href = app.x()+'/move/public/member/add';
-		});
-		$('#login_submit').click(()=>{ 
-			alert('떠라제발..');
-			$('#loginForm')
-			.attr({
-				action: app.x()+"/member/login",
-				method: "post"
-			})
-			.submit(); 
-		
-		});
-		$('#logout_btn').click(()=>{ 
-			location.href = app.x()+"/member/logout" 
-		});
-		$('#joinFormBtn').click(()=>{
-			alert('joinFormBtn click !!');
-			$('#joinForm').attr({
-				action: app.x()+"/member/add",
-				method: "post"
-			})
-			.submit(); 
-			
-		});
-		$('#retrieveBtn').click(()=>{
-			location.href = app.x()+'/move/ret/member/retrieve';
-		});
-		$('#move_updateBtn').click(()=>{
-			location.href = app.x()+'/move/auth/member/modify'
-		});
-		$('#updateBtn').click(()=>{
-			$('#updateForm').attr({
-				action: app.x()+"/member/modify/"+user.get('userid'),
-				method : "post"
-			})
-			.submit();
-		});
-		$('#move_deleteBtn').click(()=>{
-			alert('delete이도오옹오옹'+user.get('userid'));
-			location.href = app.x()+'/move/auth/member/remove';
-		});
-		$('#deleteBtn').click(()=>{
-			alert('delete이도오옹오옹'+user.get('userid'));
-			$('#deleteForm').attr({
-				action: app.x()+"/member/remove/"+user.get('userid'),
-				method: "post"
-			})
-			.submit();
-		});
-		$('#name').text(user.get('name'));
-		$('#userid').text(user.get('userid'));
-		$('#gender').text(user.get('gender'));
-		$('#age').text(user.get('age'));
-		
-	};
-	setContentView : ()=>{
-		console.log('step 4 ::'+app.j()); //컨텍스트패스가 세션에 저장딤.
-	}
-})(); */
 app =(()=>{
 	var init =x=>{
 		console.log('step 1'); //콘솔에 뜨게하는 것
@@ -106,40 +31,7 @@ app.main =(()=>{
 		
 	};
 	var setContentView =()=>{    //이벤트를 주지않아도 보여지는 화면.
-	    /* $.getScript(header,()=>{
-	    	 w.html(headerUI(ctx));
-	     });*/
-	        //// 자스 Promise 비동기 로직 다루기
-	       $.when(
-	            $.getScript(header),
-	            $.getScript(content),
-	            $.getScript(nav),
-	            $.getScript(footer),
-	            $.Deferred(y=>{
-	            	 $(y.resolve);
-	            })
-	        ).done(z=>{
-	        	 w.html(
-	        			 headerUI()
-	        			 +navUI()
-	        			 +contentUI()
-	        			 +footerUI() 
-	        	 		);
-	        	$('#login_btn').click(e=>{
-	        		e.preventDefault(); //디폴트값을 막아준다. href="#"이 있어도 상관없다. e 안에서만이다.
-	        		app.permission.login();
-	        	});
-	        	$('#board_list').click(e=>{
-	        		app.board.init();
-	        	});
-	        	$('#join_btn').click(e=>{
-	        		e.preventDefault();
-	        		app.permission.join();
-	        	})
-	        })
-	        .fail(x=>{
-	        	console.log('로드 실패');
-	        });
+		app.router.home();
 	};
 	return {
 		init : init
@@ -158,13 +50,53 @@ app.board = (()=>{
 	};
 	
 	return {init : init};
-})();//
+})();
 app.permission =(()=>{
 	var login =()=>{
 		alert('login');
 		$('#content').empty();
 		$.getScript($.script()+'/login.js',()=>{
-			$('#content').html(loginUI())
+			$('#content').html(loginUI());
+			$('#login_submit').click(e=>{
+				$.ajax({
+					url: $.ctx()+'/member/login',
+					method : 'post',
+					contentType : 'application/json',
+					data : JSON.stringify({userid: $('#userid').val(),
+										password: $('#password').val()}
+					),
+					success : d=>{
+						alert('ID 판단'+d.ID);   //d가 rmap 이다.
+						alert('PW 판단'+d.PW);
+						alert('MBR 판단'+d.MBR.userid);
+						if(d.ID ==="WRONG"){
+							
+						}else if(d.PW==="WRONG"){
+							
+						}else{
+							$('#content').html(contentUI());
+							$('#loginDivBtn').empty();
+							$('<li/>').attr('id','login_btn').addClass("nav-item mx-0 mx-lg-1").appendTo($('#loginDivBtn'));
+							$('<a/>').attr('href','#').addClass("nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger").html('logout').appendTo($('#loginDivBtn'))
+							.click(e=>{
+								app.router.home();
+							})
+							$('#joinDivBtn').empty();
+							$('<li/>').attr('id','join_btn').addClass("nav-item mx-0 mx-lg-1").appendTo($('#joinDivBtn'));
+							$('<a/>').attr('href','#').addClass("nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger").html('mypage').appendTo($('#joinDivBtn'));
+							
+							
+						}
+					},
+					error : (m1,m2,m3)=>{
+						alert('에러발생1'+m1);
+						alert('에러발생2'+m2);
+						alert('에러발생3'+m3);
+					}
+				});
+			})
+			
+			
 		});
 	};
 	var join =()=>{
@@ -172,6 +104,29 @@ app.permission =(()=>{
 		$('#content').empty();
 		$.getScript($.script()+'/add.js',()=>{
 			$('#content').html(addUI())
+			$('#joinFormBtn').click(e=>{
+				$.ajax({
+					url : $.ctx()+'/member/add',
+					method : 'post',
+					contentType : 'application/json',
+					data : JSON.stringify({name : $('#name').val(),
+						userid : $('#userid').val(),
+						password : $('#password').val(),
+						ssn : $('#ssn').val(),
+						teamid : $('#teamid').val(),
+						roll : $('#roll').val()}),
+					success :d=>{
+						
+					},
+					error : (m1,m2,m3)=>{
+						alert('에러발생1'+m1);
+						alert('에러발생2'+m2);
+						alert('에러발생3'+m3);
+					}
+				
+				});
+				
+			});
 		});
 	};
 	return {
@@ -180,7 +135,6 @@ app.permission =(()=>{
 		
 	};
 })();
-
 app.router ={
 		init : x =>{
 			$.getScript(x+'/resources/js/router.js',
@@ -191,10 +145,42 @@ app.router ={
 						.fail(x=>{console.log('실패')});
 						app.main.init();
 						
-					}
-			);
-		}
-	};
+				}
+		);
+	},
+	home : ()=>{
+		   $.when(
+		            $.getScript($.script()+'/header.js'),
+		            $.getScript($.script()+'/content.js'),
+		            $.getScript($.script()+'/nav.js'),
+		            $.getScript($.script()+'/footer.js'),
+		            $.Deferred(y=>{
+		            	 $(y.resolve);
+		            })
+		        ).done(z=>{
+		        	$('#wrapper').html(
+		        			 headerUI()
+		        			 +navUI()
+		        			 +contentUI()
+		        			 +footerUI() 
+		        	 		);
+		        	$('#login_btn').click(e=>{
+		        		e.preventDefault(); //디폴트값을 막아준다. href="#"이 있어도 상관없다. e 안에서만이다.
+		        		app.permission.login();
+		        	});
+		        	$('#board_list').click(e=>{
+		        		app.board.init();
+		        	});
+		        	$('#join_btn').click(e=>{
+		        		e.preventDefault();
+		        		app.permission.join();
+		        	})
+		        })
+		        .fail(x=>{
+		        	console.log('로드 실패');
+		        });
+	}
+};
 	
 
 

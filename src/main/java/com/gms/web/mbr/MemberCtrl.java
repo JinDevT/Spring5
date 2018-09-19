@@ -1,44 +1,48 @@
 package com.gms.web.mbr;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import javax.servlet.http.HttpSession;
+
 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttributes;
+
 
 import com.gms.web.cmm.Util;
+
 
 //
 @RestController
 @RequestMapping("/member")
-
 public class MemberCtrl {
 	static final Logger logger =  LoggerFactory.getLogger(MemberCtrl.class);
 	 //set만 하는거임. 선언이 아니고 객체로 만드는 거임. 싱글톤의 getInstance와 같다. 스프링에서 가져오는 싱글톤 객체
-	@Autowired MemberService memberService;
 	@Autowired MemberMapper mbrMapper;
-	@Autowired Member member;
-	@RequestMapping(value= "/add", method=RequestMethod.POST)
-	public String add(@ModelAttribute("member") Member member) {
+	@Autowired Member mbr;
+	
+	@PostMapping("/add")
+	public @ResponseBody String add(@RequestBody Member param) {
 		logger.info("---MemberContoller add {}--");
-		memberService.add(member);
+		Util.log.accept("넘어온 회원가입정보::"+param.toString());
 		
-		System.out.println("name is "+member.getName());
-		return "redirect:/";
+	
+		
+		
+		return null;
 	}
 	
 	/*@RequestMapping("/list")
@@ -56,7 +60,7 @@ public class MemberCtrl {
 		logger.info("---MemberContoller modify {}--");
 		System.out.println("Modfiy 비밀번호 : "+member.getPassword());
 		member.setUserid(user.getUserid());
-		memberService.modify(member); // 값이 바뀌는 지점
+		
 		
 		 
 		return "/move/public/member/retrieve";
@@ -68,33 +72,32 @@ public class MemberCtrl {
 		logger.info("---MemberContoller remove {}--");
 		member.setUserid(user.getUserid());
 		System.out.println("아이디떠랑><"+member.getUserid()+"///"+member.getPassword());
-		memberService.remove(member);
+		
 		return "redirect:/";
 		
 	}
 	@PostMapping("/login")
-	public String login(@ModelAttribute("member") Member param, Model model) {
+	public @ResponseBody Map<String,Object> login(@RequestBody Member param) {
 		logger.info("---MemberContoller login {}--");
-		//Predicate<String> p = s-> !s.equals(""); //파라미터로 받은 녀석이 널이 아니면..
-		System.out.println(">>>>>>>>>"+param.getUserid());
-		boolean b = Util.notEmpty.test(mbrMapper.exist(param.getUserid()));
-		System.out.println(":::::::::::"+b);
-		String page = "login_fail";
-		if(b) {
-			Function<Member,Member> T = (t)->{
-				return mbrMapper.login(t);
-			};
-	/*	Member mem = T.apply(param);*/
-		page = (T.apply(param).getRoll()!=null)? 
-				"login_success" : "login_fail";
-		}
-		member = (Predicate.isEqual("login_success").test(page))?
-			mbrMapper.selectOne(param):
-			new Member();
-			
-		 Util.log.accept(member.toString());
-		
-		return page;
+		Map<String,Object> rmap = new HashMap<>();
+		Util.log.accept("넘어온 로그인 정보: "+param.getPassword());
+      
+        String pwValid = "WRONG";
+        String idValid = "WRONG";
+        if (mbrMapper.count(param)!=0) {
+            idValid = "CORRECT";
+            Function<Member,Member> f = (t)->{
+                return mbrMapper.get(t);
+            };
+            mbr = f.apply(param);
+            pwValid= (mbr != null)?"CORRECT":"WRONG";
+            mbr = (mbr != null) ?mbr:new Member();
+        }
+        rmap.put("ID", idValid);
+        rmap.put("PW", pwValid);
+        rmap.put("MBR", mbr);
+     
+		return rmap;
 	
 			
 			
