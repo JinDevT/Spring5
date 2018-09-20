@@ -35,14 +35,15 @@ public class MemberCtrl {
 	@Autowired Member mbr;
 	
 	@PostMapping("/add")
-	public @ResponseBody String add(@RequestBody Member param) {
+	public @ResponseBody Map<String,Object> add(@RequestBody Member param) {
 		logger.info("---MemberContoller add {}--");
+		Map<String,Object> rmap = new HashMap<>();
 		Util.log.accept("넘어온 회원가입정보::"+param.toString());
 		
 	
 		
 		
-		return null;
+		return rmap;
 	}
 	
 	/*@RequestMapping("/list")

@@ -1,8 +1,7 @@
 function addUI(){
-	return '<div id = "contentBox"></div>'
-	+'	<div id="joinForm-layout" >'
+	return '<div id="content" >'
 	+'			<h2>회원가입</h2>'        
-	+'			<form id="joinForm" name="joinForm" >'
+	+'			<ul id="joinForm">'
 	+'				NAME: <input type="text" id="name" name="name" required /><br />'
 	+'				USER_ID: <input type="text" id="userid" name="userid" required /><br />'
 	+'				PASSWORD: <input type="password" id="password" name="password" required/><br />'
@@ -40,8 +39,8 @@ function addUI(){
 	+'				<input type="checkbox" name = "subject" value="html" />HTML'
 	+'				<input type="checkbox" name = "subject" value="spring" />Spring<br />'
 	+'				<br /><input type="hidden" name="page" value="login" /> '	
-	+'				<input id="joinFormBtn" type="button"  class="btn btn-primary" value="JOIN"><br />'
-	+'			</form>'
+	/*+'				<input id="joinFormBtn" type="button"  class="btn btn-primary" value="JOIN"><br />'*/
+	+'			</ul >'
 	+'			</div>'
 	+'		'
 	+'</body>';

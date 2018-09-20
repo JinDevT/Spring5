@@ -11,5 +11,5 @@ import lombok.Data;
 @Data
 public class Member {
 	protected String ssn,name,roll,teamid,
-	password,userid,gender,age;
+	password,userid,gender,age,subject;
 }

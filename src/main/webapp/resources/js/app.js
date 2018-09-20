@@ -55,79 +55,119 @@ app.permission =(()=>{
 	var login =()=>{
 		alert('login');
 		$('#content').empty();
-		$.getScript($.script()+'/login.js',()=>{
-			$('#content').html(loginUI());
-			$('#login_submit').click(e=>{
-				$.ajax({
-					url: $.ctx()+'/member/login',
-					method : 'post',
-					contentType : 'application/json',
-					data : JSON.stringify({userid: $('#userid').val(),
-										password: $('#password').val()}
-					),
-					success : d=>{
-						alert('ID 판단'+d.ID);   //d가 rmap 이다.
-						alert('PW 판단'+d.PW);
-						alert('MBR 판단'+d.MBR.userid);   
-						if(d.ID ==="WRONG"){ 
-							  
-						}else if(d.PW==="WRONG"){
+		$.getScript($.script()+'/compo.js',()=>{
+			$.getScript($.script()+'/login.js',()=>{
+				$('#content').html(loginUI());
+				ui.anchor({id:'login_submit',txt : '로그인'})
+				.css({'width':'300px'})
+				.addClass("btn btn-primary")
+				.appendTo($("#loginForm"))
+				.click(e=>{
+					$.ajax({
+						url: $.ctx()+'/member/login',
+						method : 'post',
+						contentType : 'application/json',
+						data : JSON.stringify({userid: $('#userid').val(),
+											password: $('#password').val()}
+						),
+						success : d=>{
+							alert('ID 판단'+d.ID);   //d가 rmap 이다.
+							alert('PW 판단'+d.PW);
+							alert('MBR 판단'+d.MBR.userid);   
+							if(d.ID ==="WRONG"){ 
+								  
+							}else if(d.PW==="WRONG"){
+								
+							}else{
+								$.getScript($.script()+'/content.js',()=>{
+									$('#content').html(contentUI());
+									$('#loginDivBtn').empty();
+									$('<li/>').attr('id','login_btn').addClass("nav-item mx-0 mx-lg-1").appendTo($('#loginDivBtn'));
+									$('<a/>').attr('href','#').addClass("nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger")
+									.html('logout').appendTo($('#loginDivBtn'))
+									.click(e=>{
+										alert('로그아웃!');
+										app.router.home();
+									})
+									$('#joinDivBtn').empty();
+									$('<li/>').attr('id','join_btn').addClass("nav-item mx-0 mx-lg-1").appendTo($('#joinDivBtn'));
+									$('<a/>').attr('href','#').addClass("nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger").html('mypage').appendTo($('#joinDivBtn'))
+									.click(e=>{});
+								})
 							
-						}else{
-							$('#content').html(contentUI());
-							$('#loginDivBtn').empty();
-							$('<li/>').attr('id','login_btn').addClass("nav-item mx-0 mx-lg-1").appendTo($('#loginDivBtn'));
-							$('<a/>').attr('href','#').addClass("nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger").html('logout').appendTo($('#loginDivBtn'))
-							.click(e=>{
-								app.router.home();
-							})
-							$('#joinDivBtn').empty();
-							$('<li/>').attr('id','join_btn').addClass("nav-item mx-0 mx-lg-1").appendTo($('#joinDivBtn'));
-							$('<a/>').attr('href','#').addClass("nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger").html('mypage').appendTo($('#joinDivBtn'));
-							
-							
+								
+								
+							}
+						},
+						error : (m1,m2,m3)=>{
+							alert('에러발생1'+m1);
+							alert('에러발생2'+m2);
+							alert('에러발생3'+m3);
 						}
-					},
-					error : (m1,m2,m3)=>{
-						alert('에러발생1'+m1);
-						alert('에러발생2'+m2);
-						alert('에러발생3'+m3);
-					}
-				});
-			})
-			
-			
+					});
+				})
+				
+				
+			});
 		});
+		
+
 	};
 	var join =()=>{
 		alert('join');
 		$('#content').empty();
-		$.getScript($.script()+'/add.js',()=>{
-			$('#content').html(addUI())
-			$('#joinFormBtn').click(e=>{
-				$.ajax({
-					url : $.ctx()+'/member/add',
-					method : 'post',
-					contentType : 'application/json',
-					data : JSON.stringify({name : $('#name').val(),
-						userid : $('#userid').val(),
-						password : $('#password').val(),
-						ssn : $('#ssn').val(),
-						teamid : $('#teamid').val(),
-						roll : $('#roll').val()}),
-					success :d=>{
-						
-					},
-					error : (m1,m2,m3)=>{
-						alert('에러발생1'+m1);
-						alert('에러발생2'+m2);
-						alert('에러발생3'+m3);
+		$.getScript($.script()+'/compo.js',()=>{
+			$.getScript($.script()+'/add.js',()=>{
+				$('#content').html(addUI());
+				/*$("[name='subject']")
+				.change(function(){
+					alert($(this).val());
+				});*/
+				ui.anchor({id:'join_submit',txt : '회원가입'})
+				.css({'width':'300px'})
+				.addClass("btn btn-primary")
+				.appendTo($("#joinForm"))
+				.click(e=>{
+				/*	var arr = [];*/
+					var sub = $("[name='subject']");
+					let i;
+					let a = '';
+					for(i of sub){
+						if(i.checked){
+							alert('선택된과목::'+i.value);
+							/*arr.push(i.value);*/
+							a += i.value+',';
+						}
 					}
-				
+					$.ajax({
+						url : $.ctx()+'/member/add',
+						method : 'post',
+						contentType : 'application/json',
+						data : JSON.stringify({
+							name : $('#name').val(),
+							userid : $('#userid').val(),
+							password : $('#password').val(),
+							ssn : $('#ssn').val(),
+							teamid : $('input[name="teamid"]:checked').val(),//??
+							roll : $('#roll').val(),
+							subject : a
+						}),
+							
+						success :d=>{
+							
+						},
+						error : (m1,m2,m3)=>{
+							alert('에러발생1'+m1);
+							alert('에러발생2'+m2);
+							alert('에러발생3'+m3);
+						}
+					
+					});
+					
 				});
-				
 			});
 		});
+
 	};
 	return {
 		login : login,
