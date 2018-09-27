@@ -14,7 +14,7 @@
       }
     }
   });
-
+// 이건평생 못볼꺼같구나
   // Scroll to top button appear
   $(document).scroll(function() {
     var scrollDistance = $(this).scrollTop();

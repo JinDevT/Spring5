@@ -2,9 +2,12 @@ package com.gms.web.brd;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.gms.web.cmm.*;
+import com.gms.web.page.Pagination;
 
-
+@Repository
 public interface BoardMapper {
 
   public void create(Board vo) throws Exception;
@@ -15,7 +18,7 @@ public interface BoardMapper {
 
   public void delete(Integer bno) throws Exception;
 
-  public List<Board> listAll() throws Exception;
+  public List<Board> listAll(Pagination p);
 
   public List<Board> listPage(int page) throws Exception;
 

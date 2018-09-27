@@ -4,7 +4,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gms.web.brd.BoardMapper">
-
+ <select id="listAll" resultType="com.gms.web.brd.Board">
+     SELECT *
+           FROM (
+            SELECT row_number() over() as No, A.*
+            FROM (
+            SELECT *
+            FROM board) A
+            ORDER BY No DESC) B
+            WHERE NO BETWEEN #{beginRow} AND #{endRow}
+ </select>
+  <select  id="count" resultType="com.gms.web.brd.Board">
+    SELECT COUNT(*) AS count 
+					 FROM board 
+    </select>
 	<!-- <insert id="create">
 		insert into tbl_message (targetid, sender,message)
 		values (#{targetid}, #{sender}, #{message})

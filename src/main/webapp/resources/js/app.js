@@ -40,13 +40,48 @@ app.main =(()=>{
 app.board = (()=>{
 	var w,header,footer,content,nav,ctx,script,style,img;
 	var init =()=>{
+		ctx = $.ctx();
+		script = $.script();
+		style = $.style();
+		img = $.img();
+		w= $('#wrapper');
+		header = script+'/header.js';
+		content = script+'/content.js';
+		nav = script+'/nav.js';
+		footer = script+'/footer.js';
 		onCreate();
 	};
 	var onCreate =()=>{
-		
+		setContentView(); 
 	};
 	var setContentView =()=>{
-		alert('Board');
+		
+		$('#content').empty();
+		$.getJSON(ctx+'/boards/1',d=>{
+			$.getScript($.script()+'/compo.js',()=>{
+				let x = {
+	                    type : 'default',
+	                    id : 'table',
+	                    head : '게시판',
+	                    body : '오픈 게시판 누구든지 사용 가능',
+	                    list : ['No','제목','내용','글쓴이','작성일','조회수'],
+	                    clazz : 'table table-bordered'
+				
+	                };
+	                (ui.tbl(x))
+	                .appendTo($('#content'));
+	                $.each(d,(i,j)=>{//d객체(자바에서건너온 lst의 index : j//  i아니다..)
+	                    let tr = $('<tr/>');
+	                    $('<th/>').html(j.bno).appendTo(tr);
+	                    $('<td/>').html(j.title).appendTo(tr);
+	                    $('<td/>').html(j.content).appendTo(tr);
+	                    $('<td/>').html(j.writer).appendTo(tr);
+	                    $('<td/>').html(j.regdate).appendTo(tr);
+	                    $('<td/>').html(j.viewcnt).appendTo(tr);
+	                    tr.appendTo($('#tbody'))
+	                });
+			});
+		});
 	};
 	
 	return {init : init};
@@ -208,7 +243,7 @@ app.router ={
 		        		e.preventDefault(); //디폴트값을 막아준다. href="#"이 있어도 상관없다. e 안에서만이다.
 		        		app.permission.login();
 		        	});
-		        	$('#board_list').click(e=>{
+		        	$('#board').click(e=>{
 		        		app.board.init();
 		        	});
 		        	$('#join_btn').click(e=>{
