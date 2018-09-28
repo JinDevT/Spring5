@@ -5,18 +5,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.gms.web.brd.BoardMapper">
  <select id="listAll" resultType="com.gms.web.brd.Board">
-     SELECT *
-           FROM (
-            SELECT row_number() over() as No, A.*
-            FROM (
-            SELECT *
-            FROM board) A
-            ORDER BY No DESC) B
-            WHERE NO BETWEEN #{beginRow} AND #{endRow}
+    SELECT *
+       FROM (
+           SELECT
+               ROW_NUMBER() OVER(ORDER BY BNO DESC) AS NUM,
+               A.*
+           FROM
+               BOARD A
+       )B
+       WHERE B.NUM BETWEEN #{beginRow} AND #{endRow}
+       ORDER BY B.NUM
  </select>
-  <select  id="count" resultType="com.gms.web.brd.Board">
-    SELECT COUNT(*) AS count 
-					 FROM board 
+ <select id="myList" resultType="com.gms.web.brd.Board">
+    SELECT *
+       FROM (
+           SELECT
+               ROW_NUMBER() OVER(ORDER BY BNO DESC) AS NUM,
+               A.*
+           FROM
+               BOARD A
+           WHERE writer LIKE #{userid}
+       )B
+       WHERE B.NUM BETWEEN #{beginRow} AND #{endRow}
+       ORDER BY B.NUM
+ </select>
+  <select  id="countAll" resultType="int">
+    SELECT COUNT(*)  FROM board 
+    </select>
+    <select  id="myCount" resultType="int">
+    SELECT COUNT(*) FROM board 
+    WHERE writer LIKE #{id}
+					 
     </select>
 	<!-- <insert id="create">
 		insert into tbl_message (targetid, sender,message)

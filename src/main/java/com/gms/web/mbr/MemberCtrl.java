@@ -81,7 +81,7 @@ public class MemberCtrl {
 	public @ResponseBody Map<String,Object> login(@RequestBody Member param) {
 		logger.info("---MemberContoller login {}--");
 		Map<String,Object> rmap = new HashMap<>();
-		Util.log.accept("넘어온 로그인 정보: "+param.getPassword());
+	
       
         String pwValid = "WRONG";
         String idValid = "WRONG";

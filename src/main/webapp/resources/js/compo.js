@@ -58,39 +58,48 @@ var ui ={
 		$('<tbody/>').attr({id:'tbody'}).appendTo(t);
 	
 		return d;
-		/*t.attr({id:'brd-tb'}).addClass('table').appendTo(x);
-		$('<thead/>').appendTo($('#brd-tb'));
-		$('<tr/>').attr({id:'brd-meta'}).appendTo($('#brd-tb'));
-		$('<th/>').attr({scope : 'col'}).html('No').appendTo($('#brd-meta'));
-		$('<th/>').attr({scope : 'col'}).html('제목').appendTo($('#brd-meta'));
-		$('<th/>').attr({scope : 'col'}).html('내용').appendTo($('#brd-meta'));
-		$('<th/>').attr({scope : 'col'}).html('작성자').appendTo($('#brd-meta'));
-		$('<th/>').attr({scope : 'col'}).html('조회수').appendTo($('#brd-meta'));
-		
-		$('<tbody/>').attr({id : 'tbodys'}).appendTo($('#brd-tb'));
-		$('<tr/>').attr({id : 'brd-row1'}).appendTo($('#tbodys'));
-		$('<th/>').html('1').appendTo($('#brd-row1'));
-		$('<td/>').html('제목1').appendTo($('#brd-row1'));
-		$('<td/>').html('제목1').appendTo($('#brd-row1'));
-		$('<td/>').html('제목1').appendTo($('#brd-row1'));
-		$('<td/>').html('제목1').appendTo($('#brd-row1'));
-		
-		$('<tr/>').attr({id : 'brd-row2'}).appendTo($('#brd-tb'));
-		$('<th/>').html('2').appendTo($('#brd-row2'));
-		$('<td/>').html('제목2').appendTo($('#brd-row2'));
-		$('<td/>').html('제목2').appendTo($('#brd-row2'));
-		$('<td/>').html('제목2').appendTo($('#brd-row2'));
-		$('<td/>').html('제목2').appendTo($('#brd-row2'));*/
-		
-		//바보니까 이거 여기다 적어놔도 못볼꺼같구나 정신차려 이친구야 
+	},
+	page : x=>{
+		return $('<ul/>').addClass('pagination').appendTo($('<nav/>').attr('aria-label','...'));
+	/*
+	 * <nav aria-label="...">
+  <ul class="pagination">
+    <li class="page-item disabled">
+      <span class="page-link">Previous</span>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item active">
+      <span class="page-link">
+        2
+        <span class="sr-only">(current)</span>
+      </span>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+
+	 * 진태 하드코딩..
+	 * ul.appendTo(nav);
+	$('<li/>').addClass('page-item disabled').appendTo(ul);
+	$('<span/>').addClass("page-link").html('Previous').appendTo(ul);
+	$('<li/>').addClass('page-item').appendTo(ul);
+	$('<a/>').addClass('page-link').attr({href:'#'}).html('1').appendTo(ul);
+	$('<li/>').addClass('page-item active').appendTo(ul);
+	$('<a/>').addClass('page-link').attr({id:'a_1' , href:'#'}).html('2').appendTo(ul);
+	$('<span/>').addClass('sr-only').html('((current))').appendTo($('#a_1'));
+	$('<li/>').addClass('page-item').appendTo(ul);
+	$('<a/>').addClass('page-link').attr({href:'#'}).html('3').appendTo(ul);
+	$('<li/>').addClass('page-item').appendTo(ul);
+	$('<a/>').addClass('page-link').attr({href:'#'}).html('4').appendTo(ul);
+	$('<li/>').addClass('page-item').appendTo(ul);
+	$('<a/>').addClass('page-link').attr({href:'#'}).html('NEXT').appendTo(ul);*/
+	
+
 		
 	}
 	
-	/*<div class="input-group mb-3">
-	  <div class="input-group-prepend">
-	    <span class="input-group-text" id="basic-addon1">@</span>
-	  </div>
-	  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-	</div>*/
-	
+
 }//콜백안에서만 전역임. 콜백은 에이싱크공간. 갔다 슬 때 콜백내부에서 처리하면 에이싱크.

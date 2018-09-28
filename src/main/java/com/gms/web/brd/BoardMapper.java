@@ -1,6 +1,7 @@
 package com.gms.web.brd;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,8 @@ public interface BoardMapper {
   public void delete(Integer bno) throws Exception;
 
   public List<Board> listAll(Pagination p);
+  
+  public List<Board> myList(Map<String,Object>o);
 
   public List<Board> listPage(int page) throws Exception;
 
@@ -35,6 +38,9 @@ public interface BoardMapper {
   
   public void updateReplyCnt(Integer bno, int amount)throws Exception;
   
+  public int countAll();
+  
+  public int myCount(String id);
   
   public void updateViewCnt(Integer bno)throws Exception;
   

@@ -21,4 +21,5 @@ public class Board {
 	private int replycnt;
 	
 	
+	
 }

@@ -1,5 +1,7 @@
 package com.gms.web.page;
 
+import java.util.Map;
+
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +24,12 @@ public class Pagination implements Proxy {
 	boolean existPrev,existNext;
 
 	@Override
-	public void carryOut(Object o) {
-		this.pageNumber = (int)o;
+	public void carryOut(Map<?,?> param) {
+		this.pageNumber =  (int) param.get("pageNumber");
 		this.pageSize = 5;
 		this.blockSize = 5;
 		System.out.println("Pagination carryOut 진입");
-		/*this.rowCount =MemberServiceImpl.getInstance().count();*/
+		this.rowCount =(int) param.get("rowCount");
 		this.pageCount = (rowCount%pageSize==0)?
 				rowCount/pageSize : rowCount/pageSize+1;
 		this.blockCount = (pageCount%blockSize==0)?
@@ -41,7 +43,7 @@ public class Pagination implements Proxy {
 		this.nextBlock = beginPage + blockSize;
 		this.existPrev = (prevBlock >= 0);
 		this.existNext =(nextBlock <= pageCount);
-		
+		//rowCount,existPrev,prevBlock,beginPage,endPage,existNext,nextBlock
 		
 		
 	}

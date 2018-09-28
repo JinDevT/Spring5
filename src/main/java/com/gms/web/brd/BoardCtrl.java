@@ -27,13 +27,61 @@ public class BoardCtrl {
 	@Autowired Pagination page;
 	@Autowired Board brd;
 	@Autowired BoardMapper brdMapper;
+	
+	@Autowired HashMap<String,Object> map;
 	@RequestMapping("/boards/{pageNo}")
-	public @ResponseBody List<Board> list(@PathVariable String pageNo){
-		logger.info("--BoardCtrl :::{} 페이지 번호::::"+pageNo);
-		page.carryOut(Integer.parseInt(pageNo));
+	public @ResponseBody Map<String,Object> list(@PathVariable String pageNo){
+		logger.info("--BoardCtrl :::{} 페이지 번호::::",pageNo);
+		map.clear();
+		map.put("pageNumber", Integer.parseInt(pageNo));
+		Util.log.accept("전체게시글 수::"+brdMapper.countAll());
+		map.put("rowCount", brdMapper.countAll());
+		page.carryOut(map);
+		//rowCount,existPrev,prevBlock,beginPage,endPage,existNext,nextBlock
+		Util.log.accept("rowCount::"+page.getRowCount());
+		Util.log.accept("existPrev::"+page.isExistPrev());
+		Util.log.accept("prevBlock::"+page.getPrevBlock());
+		Util.log.accept("beginPage::"+page.getBeginPage());
+		Util.log.accept("endPage::"+page.getEndPage());
+		Util.log.accept("existNext::"+page.isExistNext());
+		Util.log.accept("nextBlock::"+page.getNextBlock());
 		
 		List<Board> list = brdMapper.listAll(page);
 		Util.log.accept("게시글 리스트::"+list);
-		return list;
+		map.clear();
+		map.put("list", list);
+		map.put("page", page);
+		return map;
 		}
+	
+	@RequestMapping("/boards/{id}/{pageNo}")
+	public @ResponseBody Map<String,Object> myList(@PathVariable String id, @PathVariable int pageNo){
+		logger.info("--BoardCtrl :::{} 페이지 번호::::",pageNo);
+		map.clear();
+		map.put("pageNumber", pageNo);
+		map.put("rowCount", brdMapper.myCount(id));
+		page.carryOut(map);
+		
+		Util.log.accept("rowCount::"+page.getRowCount());
+		Util.log.accept("existPrev::"+page.isExistPrev());
+		Util.log.accept("prevBlock::"+page.getPrevBlock());
+		Util.log.accept("beginPage::"+page.getBeginPage());
+		Util.log.accept("endPage::"+page.getEndPage());
+		Util.log.accept("existNext::"+page.isExistNext());
+		Util.log.accept("nextBlock::"+page.getNextBlock());
+		
+		map.put("userid", id); //쿼리의 키값이랑 동일해야한다.
+		map.put("beginRow", page.getBeginRow());
+		map.put("endRow", page.getEndRow());
+		List<Board> list = brdMapper.myList(map);
+		
+		Util.log.accept("게시글 리스트::"+list);
+		Util.log.accept("아이디::"+id);
+		Util.log.accept("게시글 리스트::"+list);
+		map.clear();
+		map.put("list", list);
+		map.put("page", page);
+		map.put("id", id);
+		return map;
+	}
 }

@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Search {
-	public void test() {
+	/*public void test() {
 		Map<String,Object> param = new HashMap<>();
 		String pageNumber ="pageNum";
 		PageProxy pxy = new PageProxy();
 		int pn = (pageNumber==null)
 				? 1:
 			Integer.parseInt(pageNumber);
-		pxy.carryOut(pn);
+		pxy.carryOut(pn);*/
 		//Pagination page = pxy.getPagination();
 		
 		/*	for(int i = 0; i<arr1.length; i++) {
@@ -19,5 +19,5 @@ public class Search {
 			}
 		
 	
-	}
+	//}
 
