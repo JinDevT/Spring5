@@ -37,18 +37,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     WHERE writer LIKE #{id}
 					 
     </select>
-	<!-- <insert id="create">
-		insert into tbl_message (targetid, sender,message)
-		values (#{targetid}, #{sender}, #{message})
-	</insert>
+	 <insert id="create">
+        insert into board (title, content, writer,regdate)
+        values(#{title},#{content}, #{writer},#{regdate})
+    </insert>
 
 
-	<select id="readMessage" resultType="MessageVO">
+	<!-- <select id="readMessage" resultType="MessageVO">
 		select * from tbl_message where mid = #{mid}
 	</select>
 
 	<update id="updateState">
 		update tbl_message set opendate = now() where mid= #{mid}
-	</update>
- -->
+	</update> -->
+ 
 </mapper>

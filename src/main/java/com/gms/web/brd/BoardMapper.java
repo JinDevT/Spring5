@@ -11,7 +11,7 @@ import com.gms.web.page.Pagination;
 @Repository
 public interface BoardMapper {
 
-  public void create(Board vo) throws Exception;
+  public void create(Board brd);
 
   public Board read(Integer bno) throws Exception;
 

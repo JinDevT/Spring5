@@ -78,8 +78,9 @@ app.permission =(()=>{
 						url: $.ctx()+'/member/login',
 						method : 'post',
 						contentType : 'application/json',
-						data : JSON.stringify({userid: $('#userid').val(),
-											password: $('#password').val()}
+						data : JSON.stringify({
+							userid: $('#userid').val(),
+							password: $('#password').val()}
 						),
 						success : d=>{
 							alert('ID 판단'+d.ID);   //d가 rmap 이다.
@@ -91,6 +92,7 @@ app.permission =(()=>{
 								
 							}else{
 								$.getScript($.script()+'/content.js',()=>{
+							
 									$('#content').html(contentUI());
 									$('#loginDivBtn').empty();
 									$('<li/>').attr('id','login_btn').addClass("nav-item mx-0 mx-lg-1").appendTo($('#loginDivBtn'));
@@ -99,11 +101,13 @@ app.permission =(()=>{
 									.click(e=>{
 										alert('로그아웃!');
 										app.router.home();
-									})
+									});
+									
 									$('#joinDivBtn').empty();
 									$('<li/>').attr('id','join_btn').addClass("nav-item mx-0 mx-lg-1").appendTo($('#joinDivBtn'));
 									$('<a/>').attr('href','#').addClass("nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger").html('mypage').appendTo($('#joinDivBtn'))
 									.click(e=>{});
+									
 									$('#BoardDivBtn').empty();
 									$('<li/>').attr('id','myboard').addClass("nav-item mx-0 mx-lg-1").appendTo($('#BoardDivBtn'));
 									$('<a/>').attr('href','#').addClass("nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger").html('나의게시판').appendTo($('#BoardDivBtn'))
@@ -198,10 +202,10 @@ app.permission =(()=>{
 })();
 app.service = { //공유할 필요가 없기 때문에 객체리터럴.
 		boards : x=>{
-			$.getJSON($.ctx()+'/boards/'+x,d=>{
+			$.getJSON($.ctx()+'/boards/'+x,d=>{ //d는 자바에서 넘어온 것 map.
 				$.getScript($.script()+'/compo.js',()=>{
 					$('#content').empty();
-					let x = {
+					let t = {
 		                    type : 'default',
 		                    id : 'table',
 		                    head : '게시판',
@@ -210,7 +214,7 @@ app.service = { //공유할 필요가 없기 때문에 객체리터럴.
 		                    clazz : 'table table-bordered'
 					
 		                };
-		                (ui.tbl(x))
+		                (ui.tbl(t))
 		                .appendTo($('#content'));
 		                $.each(d.list,(i,j)=>{//d객체(자바에서건너온 lst의 index : j//  i아니다..)
 		                    let tr = $('<tr/>');
@@ -239,6 +243,10 @@ app.service = { //공유할 필요가 없기 때문에 객체리터럴.
 			      		preli.appendTo(ul)
 			      		.click(e=>{
 			      			alert('이전버튼!');
+			      			e.preventDefault();
+							if(d.page.existPrev){
+								app.service.boards(d.page.prevBlock);
+							}
 			      		})
 			      		;
 			      		
@@ -258,25 +266,29 @@ app.service = { //공유할 필요가 없기 때문에 객체리터럴.
 			      		nextli.appendTo(ul)
 			      		.click(e=>{
 			      			alert('다음버튼');
+			      			e.preventDefault();
+							if(d.page.existNext){
+								app.service.boards(d.page.nextBlock);
+							}
 			      		});
 			      	
 				});
 			});	
 		},
+		
 		my_board : x=>{
 			$.getJSON($.ctx()+'/boards/'+x.id+'/'+x.pageNo, d=>{
 				$.getScript($.script()+'/compo.js',()=>{
 					$('#content').empty();
-					let x = {
-		                    type : 'default',
+					let t = {
+		                   type : 'default',
 		                    id : 'table',
 		                    head : '게시판',
-		                    body : '오픈 게시판 누구든지 사용 가능',
+		                    body : x.id+'님의 게시판',
 		                    list : ['No','제목','내용','글쓴이','작성일','조회수'],
 		                    clazz : 'table table-bordered'
-					
 		                };
-		                (ui.tbl(x))
+		                (ui.tbl(t))
 		                .appendTo($('#content'));
 		                $.each(d.list,(i,j)=>{//d객체(자바에서건너온 lst의 index : j//  i아니다..)
 		                    let tr = $('<tr/>');
@@ -288,6 +300,7 @@ app.service = { //공유할 필요가 없기 때문에 객체리터럴.
 		                    $('<td/>').html(j.viewcnt).appendTo(tr);
 		                    tr.appendTo($('#tbody'))
 		                });
+		            	
 		              console.log(d.page.rowCount);
 		              ui.page({}).appendTo($('#content'));
 			            let ul = $('.pagination');
@@ -302,11 +315,13 @@ app.service = { //공유할 필요가 없기 때문에 객체리터럴.
 			      		}
 			      		let preli = $('<li id ="prev" class="page-item '+prev+'"><span class="page-link" >◀</span>');
 			      		let nextli = $('<li id = "next" class="page-item '+next+'"><span class="page-link" >▶</span>');
+			      	
 			      		preli.appendTo(ul)
 			      		.click(e=>{
 			      			alert('이전버튼!');
 			      		})
 			      		;
+			      		
 			      		
 			      		for(let i=d.page.beginPage; i<=d.page.endPage; i++){
 			      			$('<li class="page-item"/>')
@@ -324,9 +339,69 @@ app.service = { //공유할 필요가 없기 때문에 객체리터럴.
 			      		.click(e=>{
 			      			alert('다음버튼');
 			      		});
-			      	
+			      		ui.anchor({id:'board_write',txt : '글쓰기'})
+						.css({'width':'300px'})
+						.addClass("btn btn-success")
+						.appendTo($("#content"))
+						.click(e=>{
+							alert('게시글쓰기');
+							app.service.board_write(x);
+						});
+			  
 				});
 			});	
+		
+			
+		},
+		board_write :x=>{
+				$('#content').empty();
+				$('<div/>').attr('id','div_con').addClass('container').appendTo($('#content'));
+				$('<h5/>').html('게시글작성').appendTo($('#div_con'));
+				
+				$('<div/>').attr({id:'write_div'}).addClass('form-group').appendTo($('#div_con'));
+				$('<label/>').attr({'for':'userid'}).html('글쓴이').appendTo($('#write_div'));
+				$('<input/>').attr({'value':x.id}).addClass('form-control').appendTo($('#write_div'));
+				
+				$('<div/>').attr({id:'write_div2'}).addClass('form-group').appendTo($('#div_con'));
+				$('<label/>').attr({'for':'title'}).html('제목').appendTo($('#write_div2'));
+				$('<input/>').attr({'type':'text',id:'title'}).addClass('form-control').appendTo($('#write_div2'));
+				
+				$('<div/>').attr({id:'write_div3'}).addClass('form-group').appendTo($('#div_con'));
+				$('<label/>').attr({'for':'content'}).html('내용').appendTo($('#write_div3'));
+				$('<textarea>').attr({id:'brd_content','rows':'5'}).addClass('form-control').appendTo($('#write_div3'));
+				ui.anchor({id:'write_success',txt : '등록'})
+				.css({'width':'300px'})
+				.addClass("btn btn-success")
+				.appendTo($("#div_con"))
+				.click(e=>{
+					alert('등록');
+					$.ajax({
+						url : $.ctx()+'/boards/create',
+						method : 'post',
+						contentType : 'application/json',
+						data : JSON.stringify({
+							writer :x.id, //자바스크립트에 있는 아이디
+							title: $('#title').val(),
+							content : $('#brd_content').val()
+							
+					}),
+					success :d=>{
+						alert("아이디::"+x.id);
+						app.service.my_board({id:x.id,pageNo:'1'});
+					},
+					error : (m1,m2,m3) =>{}
+					
+				});
+			});
+				ui.anchor({id:'write_cancel',txt:'취소'})
+				.css({'width':'300px'})
+				.addClass("btn btn-success")
+				.appendTo($("#div_con"))
+				.click(e=>{
+					alert('취소');
+					app.service.my_board({id:x.id,pageNo:'1'});
+				})
+		
 		}
 };
 app.router ={

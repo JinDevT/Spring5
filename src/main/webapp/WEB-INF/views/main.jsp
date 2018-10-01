@@ -24,6 +24,7 @@
 
     <!-- Custom styles for this template -->
     <link href="${context}/resources/css/freelancer.min.css" rel="stylesheet">
+     <link href="${context}/resources/css/board.css" rel="stylesheet">
     
   <link href="${context}/resources/other_resources/AdminLTE.min.css" rel="stylesheet" type="text/css" />
     <link href="${context}/resources/other_resources/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />   

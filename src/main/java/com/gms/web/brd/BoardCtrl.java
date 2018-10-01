@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,27 +62,27 @@ public class BoardCtrl {
 		map.put("pageNumber", pageNo);
 		map.put("rowCount", brdMapper.myCount(id));
 		page.carryOut(map);
-		
-		Util.log.accept("rowCount::"+page.getRowCount());
-		Util.log.accept("existPrev::"+page.isExistPrev());
-		Util.log.accept("prevBlock::"+page.getPrevBlock());
-		Util.log.accept("beginPage::"+page.getBeginPage());
-		Util.log.accept("endPage::"+page.getEndPage());
-		Util.log.accept("existNext::"+page.isExistNext());
-		Util.log.accept("nextBlock::"+page.getNextBlock());
-		
 		map.put("userid", id); //쿼리의 키값이랑 동일해야한다.
 		map.put("beginRow", page.getBeginRow());
 		map.put("endRow", page.getEndRow());
 		List<Board> list = brdMapper.myList(map);
 		
-		Util.log.accept("게시글 리스트::"+list);
-		Util.log.accept("아이디::"+id);
-		Util.log.accept("게시글 리스트::"+list);
 		map.clear();
 		map.put("list", list);
 		map.put("page", page);
 		map.put("id", id);
+		Util.log.accept("게시글 리스트::"+list);
+		Util.log.accept("아이디::"+id);
+		Util.log.accept("게시글 리스트::"+page);
 		return map;
+	}
+	@RequestMapping("/boards/create")
+	public @ResponseBody Board create(@RequestBody Board brd){
+		Util.log.accept("작가::"+brd.getWriter());
+		Util.log.accept("내용::"+brd.getContent());
+		Util.log.accept("제목::"+brd.getTitle());
+		brdMapper.create(brd);
+		return brd;
+		
 	}
 }
